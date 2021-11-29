@@ -12,19 +12,14 @@
       content="default-src 'self'; script-src 'self'"
     />
     <title>录入新标签</title>
+    <script src="./jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <input type="text" name="label" placeholder="请输入标签名称" />
-    <input type="text" name="value" placeholder="请输入标签文本" />
-    <button onclick="addLabel">确定</button>
-    <script>
-      function addLabel() {
-        const label = {
-          label: document.querySelector('input[name="label"]').val,
-          value: document.querySelector('input[name="value"]').val,
-        };
-        ipcRenderer.send("addLabel", label);
-      }
-    </script>
+    <div id="app">
+      <input type="text" name="label" placeholder="请输入标签名称" />
+      <input type="text" name="value" placeholder="请输入标签文本" />
+      <button id="submit-btn">确定</button>
+    </div>
+    <script src="./renderer.js"></script>
   </body>
 </html>

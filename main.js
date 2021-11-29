@@ -27,7 +27,8 @@ app.whenReady().then(() => {
   let tray = new Tray(icon);
 
   const menus = [];
-  ipcMain.on('synchronous-message', (event, arg) => {
+  ipcMain.on('addLabel', (event, arg) => {
+    console.log(arg)
     menus.push({
       label: arg.label,
       click() {
