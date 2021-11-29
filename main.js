@@ -17,8 +17,8 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-
   win.loadFile("index.html");
+  win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
@@ -27,16 +27,28 @@ app.whenReady().then(() => {
   let tray = new Tray(icon);
 
   const menus = [];
+
+  // 添加标签
   ipcMain.on('addLabel', (event, arg) => {
-    console.log(arg)
-    menus.push({
-      label: arg.label,
+    menus.push(arg)
+    const contextMenu = Menu.buildFromTemplate(menus.map(({
+      label,
+      value
+    }) => ({
+      label: label,
       click() {
-        clipboard.writeText(arg.value);
+        clipboard.writeText(value);
       },
-    })
-    const contextMenu = Menu.buildFromTemplate(menus);
+    })));
     tray.setContextMenu(contextMenu);
+
+    // 发送最新的列表
+    event.reply('queryLabel-reply', menus)
+  })
+
+  // 查询标签
+  ipcMain.on('queryLabel', (event, arg) => {
+    event.reply('queryLabel-reply', menus)
   })
 
   // 页面

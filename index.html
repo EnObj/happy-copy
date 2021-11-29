@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>录入新标签</title>
-    <script src="./jquery-3.6.0.min.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <input type="text" name="label" placeholder="请输入标签名称" />
-      <input type="text" name="value" placeholder="请输入标签文本" />
-      <button id="submit-btn">确定</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" /> -->
+  <title>录入新标签</title>
+  <script src="./vue@2.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" name="label" placeholder="请输入标签名称" />
+    <input type="text" name="value" placeholder="请输入标签文本" />
+    <button id="submit-btn">确定</button>
+    <div>{{message}}</div>
+    <div>
+      <input type="text" name="all" v-model="listJson">
     </div>
-    <script src="./renderer.js"></script>
-  </body>
+    <div class="list">
+      <div class="item" v-for="item in list" :key="item.label">{{item.label}}: {{item.value}}</div>
+    </div>
+  </div>
+  <script src="./renderer.js"></script>
+</body>
+
 </html>

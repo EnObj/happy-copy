@@ -1,16 +1,10 @@
-const { ipcRenderer } = require('electron')
+const {
+  ipcRenderer
+} = require('electron')
 
 window.addEventListener("DOMContentLoaded", () => {
-  const replaceText = (selector, text) => {
-    const element = document.getElementById(selector);
-    if (element) element.innerText = text;
-  };
 
-  for (const dependency of ["chrome", "node", "electron"]) {
-    replaceText(`${dependency}-version`, process.versions[dependency]);
-  }
-
-  // 绑定点击事件
+  // 新增标签
   const btn = document.getElementById('submit-btn');
   if (btn) {
     btn.addEventListener('click', function () {
@@ -21,4 +15,13 @@ window.addEventListener("DOMContentLoaded", () => {
       ipcRenderer.send("addLabel", label);
     })
   }
+
+  // 马上查询一次
+  ipcRenderer.send("queryLabel", "")
+
+  // 查询结果
+  ipcRenderer.on('queryLabel-reply', (event, arg) => {
+    const allInp = document.querySelector('input[name="all"]')
+    // allInp.value = JSON.stringify(arg, null, 4);
+  })
 });
