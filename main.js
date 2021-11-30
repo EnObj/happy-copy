@@ -26,29 +26,28 @@ app.whenReady().then(() => {
   const icon = nativeImage.createFromPath("path/to/icon.png");
   let tray = new Tray(icon);
 
+  // 初始化菜单
   const menus = [];
 
   // 添加标签
-  ipcMain.on('addLabel', (event, arg) => {
+  ipcMain.handle('tray-menu:add', async (event, arg) => {
     menus.push(arg)
-    const contextMenu = Menu.buildFromTemplate(menus.map(({
-      label,
-      value
-    }) => ({
-      label: label,
+
+    const contextMenu = Menu.buildFromTemplate(menus.map((arg) => ({
+      label: arg.label,
       click() {
-        clipboard.writeText(value);
+        clipboard.writeText(arg.value);
       },
     })));
     tray.setContextMenu(contextMenu);
 
     // 发送最新的列表
-    event.reply('queryLabel-reply', menus)
+    return menus;
   })
 
   // 查询标签
-  ipcMain.on('queryLabel', (event, arg) => {
-    event.reply('queryLabel-reply', menus)
+  ipcMain.handle('tray-menu:query', async () => {
+    return menus
   })
 
   // 页面

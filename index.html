@@ -11,13 +11,9 @@
 
 <body>
   <div id="app">
-    <input type="text" name="label" placeholder="请输入标签名称" />
-    <input type="text" name="value" placeholder="请输入标签文本" />
-    <button id="submit-btn">确定</button>
-    <div>{{message}}</div>
-    <div>
-      <input type="text" name="all" v-model="listJson">
-    </div>
+    <input type="text" v-model="newMenu.label" placeholder="请输入标签名称" />
+    <input type="text" v-model="newMenu.value" placeholder="请输入文本" />
+    <button @click="addTrayMenu">确定</button>
     <div class="list">
       <div class="item" v-for="item in list" :key="item.label">{{item.label}}: {{item.value}}</div>
     </div>

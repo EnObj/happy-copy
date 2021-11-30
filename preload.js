@@ -1,27 +1,9 @@
 const {
-  ipcRenderer
+  ipcRenderer,
+  contextBridge
 } = require('electron')
 
-window.addEventListener("DOMContentLoaded", () => {
-
-  // 新增标签
-  const btn = document.getElementById('submit-btn');
-  if (btn) {
-    btn.addEventListener('click', function () {
-      const label = {
-        label: document.querySelector('input[name="label"]').value,
-        value: document.querySelector('input[name="value"]').value,
-      };
-      ipcRenderer.send("addLabel", label);
-    })
-  }
-
-  // 马上查询一次
-  ipcRenderer.send("queryLabel", "")
-
-  // 查询结果
-  ipcRenderer.on('queryLabel-reply', (event, arg) => {
-    const allInp = document.querySelector('input[name="all"]')
-    // allInp.value = JSON.stringify(arg, null, 4);
-  })
+contextBridge.exposeInMainWorld('trayMenu', {
+  query: () => ipcRenderer.invoke('tray-menu:query'),
+  add: (newMenu) => ipcRenderer.invoke('tray-menu:add', newMenu)
 });

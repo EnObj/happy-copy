@@ -1,19 +1,28 @@
 var app = new Vue({
     el: '#app',
     data: {
-        listJson: '3',
         list: [],
-        message: 'ceded'
+        newMenu: {
+            label: '',
+            value: '',
+        },
     },
-    created(){
-        setInterval(function(){
-            console.log(this.list, this.listJson)
-        }.bind(this), 3000)
+    async created() {
+        this.list = await window.trayMenu.query();
     },
-    watch: {
-        listJson(val) {
-            console.log(val)
-            this.list = JSON.parse(val)
+    methods: {
+        async addTrayMenu() {
+            // 标签名不能为空，也不能重复
+            if (!!this.newMenu.label && !this.list.find(({
+                    label
+                }) => label == this.newMenu.label)) {
+                this.list = await window.trayMenu.add(this.newMenu);
+                // 清空表单
+                this.newMenu = {
+                    label: '',
+                    value: '',
+                }
+            }
         }
     }
 })
