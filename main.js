@@ -43,8 +43,24 @@ app.whenReady().then(() => {
   genTrayMenu(tray, menus);
 
   // 添加标签
-  ipcMain.handle('tray-menu:add', async (event, arg) => {
-    menus.push(arg)
+  ipcMain.handle('tray-menu:add', async (event, newMenu) => {
+    menus.push(newMenu)
+
+    // 生成tray菜单
+    genTrayMenu(tray, menus);
+
+    // 持久化
+    fs.writeFileSync(path.join(__dirname, "menu.json"), JSON.stringify(menus));
+
+    // 发送最新的列表
+    return menus;
+  })
+
+  // 删除标签
+  ipcMain.handle('tray-menu:delete', async (event, menuLabel) => {
+    menus.splice(menus.findIndex(({
+      label
+    }) => label == menuLabel), 1);
 
     // 生成tray菜单
     genTrayMenu(tray, menus);
