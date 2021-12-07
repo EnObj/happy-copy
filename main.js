@@ -35,7 +35,7 @@ function genTrayMenu(tray, menus) {
 
 app.whenReady().then(() => {
   // 顶栏快捷方式
-  const icon = nativeImage.createFromPath("path/to/icon.png");
+  const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
   let tray = new Tray(icon);
 
   // 初始化菜单
