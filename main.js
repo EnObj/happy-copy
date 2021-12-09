@@ -12,8 +12,10 @@ const path = require("path");
 const fs = require('fs');
 
 // 创建主页window
+let win;
+
 function createWindow() {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -21,7 +23,6 @@ function createWindow() {
     },
   });
   win.loadFile("index.html");
-  win.webContents.openDevTools();
 }
 
 // 刷新tray菜单
@@ -96,6 +97,22 @@ app.whenReady().then(() => {
   ipcMain.handle('tray-menu:query', async () => {
     return menus
   })
+
+  // 设置窗口顶部菜单
+  const appMenu = Menu.buildFromTemplate([{
+    role: 'help',
+    submenu: [{
+      label: '切换开发人员工具',
+      click: async () => {
+        if (win.webContents.isDevToolsOpened()) {
+          win.webContents.closeDevTools();
+        } else {
+          win.webContents.openDevTools();
+        }
+      }
+    }]
+  }]);
+  Menu.setApplicationMenu(appMenu)
 
   // 程序入口：创建窗口
   createWindow();
