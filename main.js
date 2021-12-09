@@ -11,6 +11,7 @@ const {
 const path = require("path");
 const fs = require('fs');
 
+// 创建主页window
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
@@ -23,6 +24,7 @@ function createWindow() {
   win.webContents.openDevTools();
 }
 
+// 刷新tray菜单
 function genTrayMenu(tray, menus) {
   const contextMenu = Menu.buildFromTemplate(menus.map((arg) => ({
     label: arg.label,
@@ -33,13 +35,31 @@ function genTrayMenu(tray, menus) {
   tray.setContextMenu(contextMenu);
 }
 
+// 保存用户数据位置
+const menusPath = path.join(app.getPath("userData"), "menu.json");
+
+// 读取用户数据
+function loadMenus() {
+  // 如果不存在，保存空集合以创建出data文件
+  if (!fs.existsSync(menusPath)) {
+    saveMenus([])
+  }
+  return JSON.parse(fs.readFileSync(menusPath));
+}
+
+// 保存用户数据
+function saveMenus(menus) {
+  fs.writeFileSync(menusPath, JSON.stringify(menus));
+}
+
+// 程序已初始化完成
 app.whenReady().then(() => {
-  // 顶栏快捷方式
+  // 角标快捷入口
   const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
   let tray = new Tray(icon);
 
   // 初始化菜单
-  const menus = JSON.parse(fs.readFileSync(path.join(__dirname, "menu.json")));
+  const menus = loadMenus();
   genTrayMenu(tray, menus);
 
   // 添加标签
@@ -50,7 +70,7 @@ app.whenReady().then(() => {
     genTrayMenu(tray, menus);
 
     // 持久化
-    fs.writeFileSync(path.join(__dirname, "menu.json"), JSON.stringify(menus));
+    saveMenus(menus);
 
     // 发送最新的列表
     return menus;
@@ -66,7 +86,7 @@ app.whenReady().then(() => {
     genTrayMenu(tray, menus);
 
     // 持久化
-    fs.writeFileSync(path.join(__dirname, "menu.json"), JSON.stringify(menus));
+    saveMenus(menus);
 
     // 发送最新的列表
     return menus;
@@ -77,13 +97,17 @@ app.whenReady().then(() => {
     return menus
   })
 
-  // 页面
+  // 程序入口：创建窗口
   createWindow();
+
+  // 激活程序时如果没有窗口则新建窗口
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
+
+  // 所有窗口都关闭了，此时退出程序
   app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
       app.quit();
