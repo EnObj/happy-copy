@@ -6,9 +6,31 @@ var app = new Vue({
             label: '',
             value: '',
         },
+        newMenuDialog: false,
+        selected: '', // 记录选中的标签名称
     },
     async created() {
+        // 加载哟用户设置的菜单
         this.list = await window.trayMenu.query();
+        // 绑定点击菜单事件
+        window.appMenu.bindClickAddTrayMenu(function () {
+            // 打开新增弹窗
+            this.newMenuDialog = true;
+        }.bind(this));
+
+        // 绑定点击菜单事件
+        window.appMenu.bindClickDeleteTrayMenu(function () {
+            // 删除
+            if (this.selected) {
+                this.deleteTrayMenu(this.selected);
+            } else {
+                this.$message({
+                    showClose: true,
+                    type: 'warning',
+                    message: '请先选择一个标签',
+                });
+            }
+        }.bind(this));
     },
     methods: {
         async addTrayMenu() {
@@ -22,6 +44,14 @@ var app = new Vue({
                     label: '',
                     value: '',
                 }
+                // 关闭弹窗
+                this.newMenuDialog = false;
+            } else {
+                this.$message({
+                    showClose: true,
+                    type: 'warning',
+                    message: '标签名称不能为空或重复！'
+                });
             }
         },
         async deleteTrayMenu(menuLabel) {

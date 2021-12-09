@@ -100,6 +100,21 @@ app.whenReady().then(() => {
 
   // 设置窗口顶部菜单
   const appMenu = Menu.buildFromTemplate([{
+    label: '标签',
+    submenu: [{
+        label: '新建',
+        click: async () => {
+          win.webContents.send('clickAddTrayMenu', 'whoooooooh!')
+        }
+      },
+      {
+        label: '删除',
+        click: async () => {
+          win.webContents.send('clickDeleteTrayMenu', 'whoooooooh!')
+        }
+      }
+    ]
+  }, {
     role: 'help',
     submenu: [{
       label: '切换开发人员工具',

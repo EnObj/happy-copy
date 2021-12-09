@@ -5,24 +5,34 @@
   <meta charset="UTF-8" />
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" /> -->
-  <title>录入新标签</title>
+  <title>快乐拷贝</title>
   <link rel="stylesheet" href="./tailwind.min.css">
   <link rel="stylesheet" href="./element-ui/index.css">
 </head>
 
 <body>
   <div id="app" class="p-4">
-    <div class="new-menu flex gap-4">
-      <el-input type="text" v-model="newMenu.label" placeholder="请输入标签名称"></el-input>
-      <el-input type="text" v-model="newMenu.value" placeholder="请输入文本"></el-input>
-      <el-button @click="addTrayMenu" type="primary">确定</el-button>
-    </div>
     <div class="list mt-4">
-      <div class="item flex justify-between mb-2" v-for="item in list" :key="item.label">
+      <div class="item flex justify-between mb-2 cursor-pointer rounded-sm p-2" :class="{'bg-blue-300': selected == item.label}"
+        v-for="item in list" :key="item.label" @click="selected = item.label">
         <div>{{item.label}}: {{item.value}}</div>
-        <div><el-button @click="deleteTrayMenu(item.label)" type="danger">删除</el-button></div>
       </div>
+      <div v-if="!list.length">啥也没有</div>
     </div>
+    <el-dialog title="新增标签" :visible.sync="newMenuDialog">
+      <el-form :model="newMenu">
+        <el-form-item label="标签名称" :label-width="300">
+          <el-input v-model="newMenu.label" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="标签值" :label-width="300">
+          <el-input v-model="newMenu.value" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="newMenuDialog = false">取 消</el-button>
+        <el-button type="primary" @click="addTrayMenu">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
   <script src="./vue@2.js"></script>
   <script src="./element-ui/index.js"></script>
