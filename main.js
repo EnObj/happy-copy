@@ -6,6 +6,7 @@ const {
   clipboard,
   BrowserWindow,
   ipcMain,
+  Notification,
 } = require("electron");
 
 const path = require("path");
@@ -31,6 +32,11 @@ function genTrayMenu(tray, menus) {
     label: arg.label,
     click() {
       clipboard.writeText(arg.value);
+      new Notification({
+        title: '操作成功',
+        body: "标签内容已复制！",
+        icon: nativeImage.createFromPath(path.join(__dirname, "./static/image/check.png"))
+      }).show()
     },
   })));
   tray.setContextMenu(contextMenu);
