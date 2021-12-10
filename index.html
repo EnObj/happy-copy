@@ -17,9 +17,9 @@
         v-for="item in list" :key="item.label" @click="selected = item.label">
         <div>{{item.label}}: {{item.value}}</div>
       </div>
-      <div v-if="!list.length">啥也没有</div>
+      <div v-if="!list.length" class="text-sm">啥也没有，点击左上角“标签-新建”可创建标签。</div>
     </div>
-    <el-dialog title="新增标签" :visible.sync="newMenuDialog">
+    <el-dialog title="新建标签" :visible.sync="newMenuDialog">
       <el-form :model="newMenu">
         <el-form-item label="标签名称" :label-width="300">
           <el-input v-model="newMenu.label" autocomplete="off"></el-input>
