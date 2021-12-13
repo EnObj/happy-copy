@@ -28,9 +28,7 @@
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "my_electron_app"
-          }
+          "config": {}
         },
         {
           "name": "@electron-forge/maker-zip",
