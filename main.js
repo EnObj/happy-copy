@@ -12,6 +12,8 @@ const {
 const path = require("path");
 const fs = require('fs');
 
+if (require('electron-squirrel-startup')) return app.quit();
+
 // 创建主页window
 let win;
 
