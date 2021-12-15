@@ -12,6 +12,7 @@ const {
 const path = require("path");
 const fs = require('fs');
 const _ = require('lodash');
+const dayjs = require('dayjs');
 
 // 引入开发者工具
 const {
@@ -44,24 +45,45 @@ function showWindow() {
   }
 }
 
+function copy(value) {
+  clipboard.writeText(value);
+  new Notification({
+    title: '操作成功',
+    body: "内容已拷贝！",
+    icon: nativeImage.createFromPath(path.join(__dirname, "./static/image/check.png"))
+  }).show()
+}
+
 // 刷新tray菜单
 function genTrayMenu(tray, menus) {
   // 用户的菜单项
   const userMenuItems = menus.map((arg) => ({
     label: arg.label,
     click() {
-      clipboard.writeText(arg.value);
-      new Notification({
-        title: '操作成功',
-        body: "标签内容已复制！",
-        icon: nativeImage.createFromPath(path.join(__dirname, "./static/image/check.png"))
-      }).show()
+      copy(arg.value);
     },
   }))
   // 系统菜单项1
   const sysMenuItems1 = [{
     label: '显示主页面',
     click: showWindow
+  }, {
+    type: 'separator'
+  }, {
+    label: '系统日期',
+    click() {
+      copy(dayjs().format('YYYY-MM-DD'));
+    }
+  }, {
+    label: '系统时间',
+    click() {
+      copy(dayjs().format('HH:mm:ss'));
+    }
+  }, {
+    label: '系统日期时间',
+    click() {
+      copy(dayjs().format('YYYY-MM-DD HH:mm:ss'));
+    }
   }, {
     type: 'separator'
   }];
