@@ -17,6 +17,9 @@ const dayjs = require('dayjs');
 // 安装过程中避免多次启动程序
 if (require('electron-squirrel-startup')) return app.quit();
 
+// 程序图标
+const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
+
 // 创建主页window
 let win;
 
@@ -27,6 +30,7 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+    icon,
   });
   win.loadFile("index.html");
 }
@@ -114,7 +118,7 @@ function saveMenus(menus) {
 // 程序已初始化完成
 app.whenReady().then(() => {
   // 角标快捷入口
-  const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
+  
   let tray = new Tray(icon);
   // 点击角标弹出主页面
   tray.on('click', showWindow)
