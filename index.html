@@ -12,9 +12,9 @@
 
 <body>
   <div id="app" class="p-4">
-    <div class="list mt-4">
+    <div class="list">
       <div v-for="item in list" :key="item.label" class="item flex justify-between mb-2 cursor-pointer rounded-sm p-2"
-        :class="{'bg-blue-300': selected == item.label, 'hover:bg-blue-100': selected != item.label}"
+        :class="{'bg-green-300': selected == item.label, 'hover:bg-green-100': selected != item.label}"
         @click="selected = (selected == item.label ?  '' : item.label)">
         <div>{{item.label}}: {{item.value}}</div>
       </div>
@@ -31,7 +31,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="newMenuDialog = false">取 消</el-button>
-        <el-button type="primary" @click="addTrayMenu">确 定</el-button>
+        <el-button type="success" @click="addTrayMenu">确 定</el-button>
       </div>
     </el-dialog>
   </div>
