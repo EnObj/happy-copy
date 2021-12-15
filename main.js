@@ -11,6 +11,7 @@ const {
 
 const path = require("path");
 const fs = require('fs');
+const _ = require('lodash');
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -30,7 +31,8 @@ function createWindow() {
 
 // 刷新tray菜单
 function genTrayMenu(tray, menus) {
-  const contextMenu = Menu.buildFromTemplate(menus.map((arg) => ({
+  // 用户的菜单项
+  const userMenuItems = menus.map((arg) => ({
     label: arg.label,
     click() {
       clipboard.writeText(arg.value);
@@ -40,7 +42,30 @@ function genTrayMenu(tray, menus) {
         icon: nativeImage.createFromPath(path.join(__dirname, "./static/image/check.png"))
       }).show()
     },
-  })));
+  }))
+  // 系统菜单项1
+  const sysMenuItems1 = [{
+    label: '显示主页面',
+    click() {
+      if (win.isDestroyed()) {
+        createWindow();
+      } else {
+        win.show();
+      }
+    }
+  }, {
+    type: 'separator'
+  }];
+  // 系统菜单项2
+  const sysMenuItems2 = [{
+    type: 'separator'
+  }, {
+    label: '退出',
+    click() {
+      app.quit();
+    }
+  }]
+  const contextMenu = Menu.buildFromTemplate(_.concat(sysMenuItems1, userMenuItems, sysMenuItems2));
   tray.setContextMenu(contextMenu);
 }
 
@@ -149,8 +174,8 @@ app.whenReady().then(() => {
 
   // 所有窗口都关闭了，此时退出程序
   app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-      app.quit();
-    }
+    // if (process.platform !== "darwin") {
+    //   app.quit();
+    // }
   });
 });
