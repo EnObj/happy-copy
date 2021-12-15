@@ -20,7 +20,8 @@
     "electron": "^16.0.1"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "lodash": "^4.17.21"
   },
   "config": {
     "forge": {
