@@ -14,12 +14,6 @@ const fs = require('fs');
 const _ = require('lodash');
 const dayjs = require('dayjs');
 
-// 引入开发者工具
-const {
-  default: installExtension,
-  VUEJS_DEVTOOLS
-} = require('electron-devtools-installer');
-
 // 安装过程中避免多次启动程序
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -119,11 +113,6 @@ function saveMenus(menus) {
 
 // 程序已初始化完成
 app.whenReady().then(() => {
-  // 安装开发者工具
-  installExtension(VUEJS_DEVTOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
-
   // 角标快捷入口
   const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
   let tray = new Tray(icon);
