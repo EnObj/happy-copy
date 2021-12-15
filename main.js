@@ -14,7 +14,10 @@ const fs = require('fs');
 const _ = require('lodash');
 
 // 引入开发者工具
-const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer');
+const {
+  default: installExtension,
+  VUEJS_DEVTOOLS
+} = require('electron-devtools-installer');
 
 // 安装过程中避免多次启动程序
 if (require('electron-squirrel-startup')) return app.quit();
@@ -31,6 +34,14 @@ function createWindow() {
     },
   });
   win.loadFile("index.html");
+}
+
+function showWindow() {
+  if (win.isDestroyed()) {
+    createWindow();
+  } else {
+    win.show();
+  }
 }
 
 // 刷新tray菜单
@@ -50,13 +61,7 @@ function genTrayMenu(tray, menus) {
   // 系统菜单项1
   const sysMenuItems1 = [{
     label: '显示主页面',
-    click() {
-      if (win.isDestroyed()) {
-        createWindow();
-      } else {
-        win.show();
-      }
-    }
+    click: showWindow
   }, {
     type: 'separator'
   }];
@@ -94,12 +99,14 @@ function saveMenus(menus) {
 app.whenReady().then(() => {
   // 安装开发者工具
   installExtension(VUEJS_DEVTOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
 
   // 角标快捷入口
   const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
   let tray = new Tray(icon);
+  // 点击角标弹出主页面
+  tray.on('click', showWindow)
 
   // 初始化菜单
   const menus = loadMenus();
