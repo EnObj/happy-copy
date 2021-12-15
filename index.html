@@ -6,15 +6,16 @@
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
   <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" /> -->
   <title>快乐拷贝</title>
-  <link rel="stylesheet" href="./tailwind.min.css">
-  <link rel="stylesheet" href="./element-ui/index.css">
+  <link rel="stylesheet" href="./static/css/tailwind.min.css">
+  <link rel="stylesheet" href="./static/element-ui/index.css">
 </head>
 
 <body>
   <div id="app" class="p-4">
     <div class="list mt-4">
-      <div class="item flex justify-between mb-2 cursor-pointer rounded-sm p-2" :class="{'bg-blue-300': selected == item.label}"
-        v-for="item in list" :key="item.label" @click="selected = item.label">
+      <div v-for="item in list" :key="item.label" class="item flex justify-between mb-2 cursor-pointer rounded-sm p-2"
+        :class="{'bg-blue-300': selected == item.label, 'hover:bg-blue-100': selected != item.label}"
+        @click="selected = (selected == item.label ?  '' : item.label)">
         <div>{{item.label}}: {{item.value}}</div>
       </div>
       <div v-if="!list.length" class="text-sm">啥也没有，点击左上角“标签-新建”可创建标签。</div>
@@ -34,8 +35,8 @@
       </div>
     </el-dialog>
   </div>
-  <script src="./vue@2.js"></script>
-  <script src="./element-ui/index.js"></script>
+  <script src="./static/js/vue@2.js"></script>
+  <script src="./static/element-ui/index.js"></script>
   <script src="./renderer.js"></script>
 </body>
 
