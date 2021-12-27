@@ -195,6 +195,11 @@ app.whenReady().then(() => {
           win.webContents.openDevTools();
         }
       }
+    },{
+      label: '关于',
+      click: async () => {
+        win.webContents.send('clickAbout', 'whoooooooh!')
+      }
     }]
   }]);
   Menu.setApplicationMenu(appMenu)

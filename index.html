@@ -34,6 +34,15 @@
         <el-button type="success" @click="addTrayMenu">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="关于" :visible.sync="aboutDialog" :close-on-click-modal="false">
+      <div>
+        <h1 class="text-center text-lg font-bold mb-3">happy-copy</h1>
+        <p>描述：帮助你快速复制一段内容到剪切板</p>
+        <p>版本：v1.1.2</p>
+        <p>参与者：奥利会，山楂</p>
+        <p>项目地址：https://gitee.com/enobj/happy-copy</p>
+      </div>
+    </el-dialog>
   </div>
   <script src="./static/js/vue@2.js"></script>
   <script src="./static/element-ui/index.js"></script>

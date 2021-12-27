@@ -8,6 +8,7 @@ var app = new Vue({
         },
         newMenuDialog: false,
         selected: '', // 记录选中的标签名称
+        aboutDialog: false, // 关于
     },
     async created() {
         // 加载哟用户设置的菜单
@@ -30,6 +31,12 @@ var app = new Vue({
                     message: '请先选择一个标签',
                 });
             }
+        }.bind(this));
+
+        // 绑定点击“关于”
+        window.appMenu.bindClickAbout(function () {
+            // 打开新增弹窗
+            this.aboutDialog = true;
         }.bind(this));
     },
     methods: {

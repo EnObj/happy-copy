@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('trayMenu', {
 
 contextBridge.exposeInMainWorld('appMenu', {
   bindClickAddTrayMenu: (fn) => ipcRenderer.on('clickAddTrayMenu', fn),
-  bindClickDeleteTrayMenu: (fn) => ipcRenderer.on('clickDeleteTrayMenu', fn)
+  bindClickDeleteTrayMenu: (fn) => ipcRenderer.on('clickDeleteTrayMenu', fn),
+  bindClickAbout: (fn) => ipcRenderer.on('clickAbout', fn),
 });
