@@ -7,11 +7,13 @@ const {
   BrowserWindow,
   ipcMain,
   Notification,
+  dialog,
 } = require("electron");
 
 const path = require("path");
 const _ = require('lodash');
 const dayjs = require('dayjs');
+const fs = require("fs");
 
 const settingService = require('./service/settingService');
 const userMenuService = require('./service/userMenuService');
@@ -49,7 +51,13 @@ function showWindow() {
 }
 
 function copy(value) {
-  clipboard.writeText(value);
+  // 如果是图片
+  if (fs.existsSync(value)) {
+    console.log(clipboard.availableFormats);
+    clipboard.writeImage(nativeImage.createFromPath(value))
+  } else {
+    clipboard.writeText(value);
+  }
   new Notification({
     title: '操作成功',
     body: "内容已拷贝！",
@@ -155,6 +163,21 @@ app.whenReady().then(() => {
     return menus
   })
 
+  // 选择文件
+  ipcMain.handle('tray-menu:selectFile', async () => {
+    const {
+      filePaths
+    } = await dialog.showOpenDialog({
+      properties: ['openFile', 'multiSelections'],
+      filters: [{
+        name: 'Images',
+        extensions: ['jpg', 'png', 'gif']
+      }, ]
+    });
+    console.log(filePaths);
+    return filePaths[0]
+  })
+
   // 设置窗口顶部菜单
   const appMenu = Menu.buildFromTemplate([{
     label: '标签',
@@ -195,7 +218,7 @@ app.whenReady().then(() => {
           win.webContents.openDevTools();
         }
       }
-    },{
+    }, {
       label: '关于',
       click: async () => {
         win.webContents.send('clickAbout', 'whoooooooh!')

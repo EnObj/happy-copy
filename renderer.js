@@ -80,6 +80,9 @@ var app = new Vue({
                     message: '已取消删除'
                 });
             });
+        },
+        async selectFile() {
+            this.newMenu.value = await window.trayMenu.selectFile();
         }
     }
 })

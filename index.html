@@ -28,6 +28,7 @@
         <el-form-item label="标签值" :label-width="300">
           <el-input v-model="newMenu.value" autocomplete="off"></el-input>
         </el-form-item>
+        <el-button @click="selectFile">选择图片</el-button>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="newMenuDialog = false">取 消</el-button>
