@@ -172,22 +172,28 @@ app.whenReady().then(() => {
       }
     ]
   }, {
+    label: '设置',
+    submenu: [{
+      label: '显示系统时间',
+      type: 'checkbox',
+      checked: settings.showDateTime,
+      click: async () => {
+        settings.showDateTime = !settings.showDateTime;
+        settingService.saveSettings(settings);
+        genTrayMenu(tray, menus);
+      }
+    }]
+  }, {
     role: 'help',
     submenu: [{
-      label: '切换开发人员工具',
+      label: '显示开发人员工具',
+      type: 'checkbox',
       click: async () => {
         if (win.webContents.isDevToolsOpened()) {
           win.webContents.closeDevTools();
         } else {
           win.webContents.openDevTools();
         }
-      }
-    }, {
-      label: '显示/隐藏系统时间',
-      click: async () => {
-        settings.showDateTime = !settings.showDateTime;
-        settingService.saveSettings(settings);
-        genTrayMenu(tray, menus);
       }
     }]
   }]);
