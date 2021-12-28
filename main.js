@@ -13,7 +13,6 @@ const {
 const path = require("path");
 const _ = require('lodash');
 const dayjs = require('dayjs');
-const fs = require("fs");
 
 const settingService = require('./service/settingService');
 const userMenuService = require('./service/userMenuService');
