@@ -50,9 +50,9 @@ function showWindow() {
   }
 }
 
-function copy(value) {
+function copy(value, type) {
   // 如果是图片
-  if (fs.existsSync(value)) {
+  if (type == 'img') {
     console.log(clipboard.availableFormats);
     clipboard.writeImage(nativeImage.createFromPath(value))
   } else {
@@ -71,7 +71,7 @@ function genTrayMenu(tray, menus) {
   const userMenuItems = menus.map((arg) => ({
     label: arg.label,
     click() {
-      copy(arg.value);
+      copy(arg.value, arg.type);
     },
   }))
   // 系统菜单项1

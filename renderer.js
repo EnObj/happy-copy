@@ -5,6 +5,7 @@ var app = new Vue({
         newMenu: {
             label: '',
             value: '',
+            type: '', // 目前支持：''/'text'=文本，'img'=图片，
         },
         newMenuDialog: false,
         selected: '', // 记录选中的标签名称
@@ -42,6 +43,10 @@ var app = new Vue({
         }.bind(this));
     },
     methods: {
+        closeAdd() {
+            this.newMenu.type = '';
+            this.newMenuDialog = false;
+        },
         async addTrayMenu() {
             // 标签名不能为空，也不能重复
             if (!!this.newMenu.label && !this.list.find(({
@@ -85,6 +90,7 @@ var app = new Vue({
         },
         async selectFile() {
             this.newMenu.value = await window.trayMenu.selectFile();
+            this.newMenu.type = 'img';
         },
         // 拖拽开始
         dragStart(event, index) {
