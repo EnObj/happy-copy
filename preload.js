@@ -19,3 +19,7 @@ contextBridge.exposeInMainWorld('appMenu', {
   bindClickDeleteTrayMenu: (fn) => ipcRenderer.on('clickDeleteTrayMenu', fn),
   bindClickAbout: (fn) => ipcRenderer.on('clickAbout', fn),
 });
+
+contextBridge.exposeInMainWorld('happyCopy', {
+  getVersion: () => ipcRenderer.invoke('app:version'),
+})

@@ -202,6 +202,10 @@ app.whenReady().then(() => {
     return filePaths[0]
   })
 
+  ipcMain.handle('app:version', async () => {
+    return app.getVersion();
+  })
+
   // 设置窗口顶部菜单
   const appMenu = Menu.buildFromTemplate([{
     label: '标签',

@@ -9,8 +9,10 @@ var app = new Vue({
         newMenuDialog: false,
         selected: '', // 记录选中的标签名称
         aboutDialog: false, // 关于
+        version: '-.-.-',
     },
     async created() {
+        this.version = await window.happyCopy.getVersion();
         // 加载哟用户设置的菜单
         this.list = await window.trayMenu.query();
         // 绑定点击菜单事件
