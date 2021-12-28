@@ -10,7 +10,7 @@ module.exports = {
     loadSettings() {
         // 如果不存在，保存空集合以创建出data文件
         if (!fs.existsSync(settingsPath)) {
-            saveSettings({})
+            this.saveSettings({})
         }
         return JSON.parse(fs.readFileSync(settingsPath));
     },

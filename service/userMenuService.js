@@ -10,7 +10,7 @@ module.exports = {
     loadMenus() {
         // 如果不存在，保存空集合以创建出data文件
         if (!fs.existsSync(menusPath)) {
-            saveMenus([])
+            this.saveMenus([])
         }
         return JSON.parse(fs.readFileSync(menusPath));
     },
