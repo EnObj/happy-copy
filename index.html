@@ -13,11 +13,16 @@
 <body>
   <div id="app" class="p-4">
     <div class="list">
-      <div v-for="item in list" :key="item.label" class="item flex justify-between mb-2 cursor-pointer rounded-sm p-2"
-        :class="{'bg-green-300': selected == item.label, 'hover:bg-green-100': selected != item.label}"
-        @click="selected = (selected == item.label ?  '' : item.label)">
-        <div>{{item.label}}: {{item.value}}</div>
+      <div v-for="(item, index) in list" :key="item.label">
+        <div @dragover="$event.preventDefault()" @dragenter="dropEnter($event, index)"
+          @dragleave="dropLeave($event, index)" @drop="dropEnd($event, index)" class="p-1"></div>
+        <div class="mb-2 cursor-pointer rounded-sm p-2"
+          :class="{'bg-green-300': selected == item.label, 'hover:bg-green-100': selected != item.label}"
+          @click="selected = (selected == item.label ?  '' : item.label)" draggable="true"
+          @dragstart="dragStart($event, index)">{{item.label}}: {{item.value}}</div>
       </div>
+      <div @dragover="$event.preventDefault()" @dragenter="dropEnter($event, list.length)"
+        @dragleave="dropLeave($event, list.length)" @drop="dropEnd($event, list.length)" class="p-1"></div>
       <div v-if="!list.length" class="text-sm">啥也没有，点击左上角“标签-新建”可创建标签。</div>
     </div>
     <el-dialog title="新建标签" :visible.sync="newMenuDialog" :close-on-click-modal="false">
@@ -46,6 +51,7 @@
     </el-dialog>
   </div>
   <script src="./static/js/vue@2.js"></script>
+  <script src="./static/js/lodash.min.js"></script>
   <script src="./static/element-ui/index.js"></script>
   <script src="./renderer.js"></script>
 </body>

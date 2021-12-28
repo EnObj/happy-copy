@@ -83,6 +83,26 @@ var app = new Vue({
         },
         async selectFile() {
             this.newMenu.value = await window.trayMenu.selectFile();
-        }
+        },
+        // 拖拽开始
+        dragStart(event, index) {
+            console.log('开始', index);
+            event.dataTransfer.setData("text/plain", index);
+        },
+        // 拖拽进入
+        dropEnter(event) {
+            event.target.style.background = "green";
+        },
+        // 拖拽离开
+        dropLeave(event) {
+            event.target.style.background = "";
+        },
+        // 拖拽结束
+        async dropEnd(event, to) {
+            const from = event.dataTransfer.getData("text/plain");
+            event.target.style.background = "";
+            console.log('结束', to, from);
+            this.list = await window.trayMenu.sort(from, to);
+        },
     }
 })

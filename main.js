@@ -163,6 +163,30 @@ app.whenReady().then(() => {
     return menus
   })
 
+  // 拖拽排序
+  ipcMain.handle('tray-menu:sort', async (event, {
+    from,
+    to
+  }) => {
+    if (from == to) {
+      return menus;
+    }
+
+    // 抹掉原来的
+    const [item] = menus.splice(from, 1);
+    // 新增新位置的
+    menus.splice(from > to ? to : to - 1, 0, item)
+
+    // 生成tray菜单
+    genTrayMenu(tray, menus);
+
+    // 持久化
+    userMenuService.saveMenus(menus);
+
+    // 发送最新的列表
+    return menus;
+  })
+
   // 选择文件
   ipcMain.handle('tray-menu:selectFile', async () => {
     const {
