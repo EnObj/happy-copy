@@ -69,7 +69,7 @@ function copy(value, type) {
 function genTrayMenu(tray, menus) {
   // 用户的菜单项
   const userMenuItems = menus.map((arg) => ({
-    label: arg.label,
+    label: (arg.type == 'img' ? '🖼️' : '🔤') + arg.label,
     click() {
       copy(arg.value, arg.type);
     },
