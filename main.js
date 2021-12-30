@@ -13,6 +13,7 @@ const {
 const path = require("path");
 const _ = require('lodash');
 const dayjs = require('dayjs');
+const fs = require('fs');
 
 const settingService = require('./service/settingService');
 const userMenuService = require('./service/userMenuService');
@@ -40,10 +41,22 @@ function createWindow() {
   });
   win.loadFile("index.html");
   win.webContents.on('before-input-event', (event, input) => {
+    // 在主页面绑定ctrl+v快速创建项目
     if (input.control && input.key.toLowerCase() === 'v') {
-      win.webContents.send('clickAddTrayMenu', {
-        value: clipboard.readText()
-      })
+      // 图片
+      const img = clipboard.readImage();
+      if (!img.isEmpty()) {
+        const imgPath = path.resolve(app.getPath("userData"), `userimg-${Date.now()}.png`)
+        fs.writeFileSync(imgPath, img.toPNG())
+        win.webContents.send('clickAddTrayMenu', {
+          value: imgPath,
+          type: 'img'
+        })
+      } else { // 默认是文本
+        win.webContents.send('clickAddTrayMenu', {
+          value: clipboard.readText() || ''
+        })
+      }
       event.preventDefault()
     }
   })
