@@ -39,6 +39,14 @@ function createWindow() {
     icon,
   });
   win.loadFile("index.html");
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.control && input.key.toLowerCase() === 'v') {
+      win.webContents.send('clickAddTrayMenu', {
+        value: clipboard.readText()
+      })
+      event.preventDefault()
+    }
+  })
 }
 
 function showWindow() {
@@ -211,7 +219,8 @@ app.whenReady().then(() => {
     submenu: [{
         label: '新建',
         click: async () => {
-          win.webContents.send('clickAddTrayMenu', 'whoooooooh!')
+          // 如果剪切板内有值，那么发给页面上直接使用
+          win.webContents.send('clickAddTrayMenu')
         }
       },
       {

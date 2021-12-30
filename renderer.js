@@ -16,10 +16,17 @@ var app = new Vue({
         this.version = await window.happyCopy.getVersion();
         // 加载哟用户设置的菜单
         this.list = await window.trayMenu.query();
-        // 绑定点击菜单事件
-        window.appMenu.bindClickAddTrayMenu(function () {
+        // 绑定点击“新增”
+        window.appMenu.bindClickAddTrayMenu(function (event, init) {
+            console.log(init);
             // 打开新增弹窗
             this.newMenuDialog = true;
+            if (init) {
+                this.newMenu = {
+                    ...this.newMenu,
+                    ...init,
+                }
+            }
         }.bind(this));
 
         // 绑定点击菜单事件
