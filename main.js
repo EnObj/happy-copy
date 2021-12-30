@@ -238,6 +238,7 @@ app.whenReady().then(() => {
     submenu: [{
       label: '显示开发人员工具',
       type: 'checkbox',
+      accelerator: 'F12',
       click: async () => {
         if (win.webContents.isDevToolsOpened()) {
           win.webContents.closeDevTools();
