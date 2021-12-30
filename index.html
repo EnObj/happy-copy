@@ -8,6 +8,7 @@
   <title>快乐拷贝</title>
   <link rel="stylesheet" href="./static/css/tailwind.min.css">
   <link rel="stylesheet" href="./static/element-ui/index.css">
+  <link rel="stylesheet" href="./static/css/pattern.min.css">
 </head>
 
 <body>
@@ -16,12 +17,13 @@
       <div v-for="(item, index) in list" :key="item.label">
         <div @dragover="$event.preventDefault()" @dragenter="dropEnter($event, index)"
           @dragleave="dropLeave($event, index)" @drop="dropEnd($event, index)" class="p-1"></div>
-        <div class="my-1 cursor-pointer rounded-sm p-2 flex items-center"
-          :class="{'bg-green-300': selected == item.label, 'hover:bg-green-100': selected != item.label}"
+        <div
+          :class="selected == item.label ? 'pattern-checks-sm text-green-200' : 'hover:bg-green-100'"
+          class="my-1 cursor-pointer rounded-sm p-2 flex items-center text-green-50 bg-gray-50"
           @click="selected = (selected == item.label ?  '' : item.label)" draggable="true"
           @dragstart="dragStart($event, index)">
-          <div class="flex-1 mr-2">{{item.label}}</div>
-          <div class="flex-auto text-right">
+          <div class="flex-none mr-20 text-black font-medium">{{item.label}}</div>
+          <div class="flex-auto text-right text-red-500">
             <el-image :src="item.value" v-if="item.type == 'img'" class="border-dashed border-2 h-8" fit="contain"
               :preview-src-list="[item.value]">
             </el-image>
