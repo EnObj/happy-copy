@@ -22,7 +22,7 @@ const userMenuService = require('./service/userMenuService');
 if (require('electron-squirrel-startup')) return app.quit();
 
 // 程序图标
-const icon = nativeImage.createFromPath(path.join(__dirname, "./static/image/icon.png"));
+const icon = nativeImage.createFromPath(path.join(__dirname, "./assets/image/icon.png"));
 
 // 初始化用户设置
 const settings = settingService.loadSettings();
@@ -81,7 +81,7 @@ function copy(value, type) {
   new Notification({
     title: '操作成功',
     body: "内容已拷贝！",
-    icon: nativeImage.createFromPath(path.join(__dirname, "./static/image/check.png"))
+    icon: nativeImage.createFromPath(path.join(__dirname, "./assets/image/check.png"))
   }).show()
 }
 
