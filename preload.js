@@ -23,3 +23,13 @@ contextBridge.exposeInMainWorld('appMenu', {
 contextBridge.exposeInMainWorld('happyCopy', {
   getVersion: () => ipcRenderer.invoke('app:version'),
 })
+
+// 绑定右键
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault()
+  ipcRenderer.send('show-context-menu')
+})
+
+ipcRenderer.on('context-menu-command', (e, command) => {
+  console.log(e, command);
+})

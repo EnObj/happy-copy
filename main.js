@@ -226,6 +226,23 @@ app.whenReady().then(() => {
     return app.getVersion();
   })
 
+  // 右键菜单
+  ipcMain.on('show-context-menu', (event) => {
+    const template = [{
+      label: '新建',
+      click: () => {
+        win.webContents.send('clickAddTrayMenu')
+      }
+    }, {
+      label: '删除',
+      click: () => {
+        win.webContents.send('clickDeleteTrayMenu', 'whoooooooh!')
+      }
+    }]
+    const menu = Menu.buildFromTemplate(template)
+    menu.popup(BrowserWindow.fromWebContents(event.sender))
+  })
+
   // 设置窗口顶部菜单
   const appMenu = Menu.buildFromTemplate([{
     label: '标签',
