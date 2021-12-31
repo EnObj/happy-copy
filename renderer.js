@@ -99,6 +99,9 @@ var app = new Vue({
             this.newMenu.value = await window.trayMenu.selectFile();
             this.newMenu.type = 'img';
         },
+        async toggleHidden(menuLabel) {
+            this.list = await window.trayMenu.toggleHidden(menuLabel);
+        },
         // 拖拽开始
         dragStart(event, index) {
             console.log('开始', index);

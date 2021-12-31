@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld('trayMenu', {
     from,
     to
   }),
+  toggleHidden: (menuLabel) => ipcRenderer.invoke('tray-menu:toggleHidden', menuLabel),
   selectFile: () => ipcRenderer.invoke('tray-menu:selectFile'),
 });
 

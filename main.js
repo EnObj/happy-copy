@@ -178,6 +178,21 @@ app.whenReady().then(() => {
     return menus;
   })
 
+  // 切换隐藏/显示
+  ipcMain.handle('tray-menu:toggleHidden', async (event, menuLabel) => {
+    const target = menus.find(({
+      label
+    }) => label == menuLabel);
+    target.hidden = !target.hidden;
+
+    // 生成tray菜单
+    genTrayMenu(tray, menus);
+    // 持久化
+    userMenuService.saveMenus(menus);
+    // 发送最新的列表
+    return menus;
+  })
+
   // 查询标签
   ipcMain.handle('tray-menu:query', async () => {
     return menus
