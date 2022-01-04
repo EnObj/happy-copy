@@ -162,6 +162,22 @@ app.whenReady().then(() => {
     return menus;
   })
 
+  // 编辑标签
+  ipcMain.handle('tray-menu:edit', async (event, newMenu, target) => {
+    menus.splice(menus.findIndex(({
+      label
+    }) => label == target), 1, newMenu);
+
+    // 生成tray菜单
+    genTrayMenu(tray, menus);
+
+    // 持久化
+    userMenuService.saveMenus(menus);
+
+    // 发送最新的列表
+    return menus;
+  })
+
   // 删除标签
   ipcMain.handle('tray-menu:delete', async (event, menuLabel) => {
     menus.splice(menus.findIndex(({
@@ -247,6 +263,11 @@ app.whenReady().then(() => {
       label: '新建',
       click: () => {
         win.webContents.send('clickAddTrayMenu')
+      }
+    }, {
+      label: '编辑',
+      click: () => {
+        win.webContents.send('clickEditTrayMenu')
       }
     }, {
       label: '删除',

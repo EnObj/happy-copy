@@ -6,6 +6,7 @@ const {
 contextBridge.exposeInMainWorld('trayMenu', {
   query: () => ipcRenderer.invoke('tray-menu:query'),
   add: (newMenu) => ipcRenderer.invoke('tray-menu:add', newMenu),
+  edit: (newMenu, target) => ipcRenderer.invoke('tray-menu:edit', newMenu, target),
   delete: (menuLabel) => ipcRenderer.invoke('tray-menu:delete', menuLabel),
   sort: (from, to) => ipcRenderer.invoke('tray-menu:sort', {
     from,
@@ -18,6 +19,7 @@ contextBridge.exposeInMainWorld('trayMenu', {
 contextBridge.exposeInMainWorld('appMenu', {
   bindClickAddTrayMenu: (fn) => ipcRenderer.on('clickAddTrayMenu', fn),
   bindClickDeleteTrayMenu: (fn) => ipcRenderer.on('clickDeleteTrayMenu', fn),
+  bindClickEditTrayMenu: (fn) => ipcRenderer.on('clickEditTrayMenu', fn),
   bindClickAbout: (fn) => ipcRenderer.on('clickAbout', fn),
 });
 

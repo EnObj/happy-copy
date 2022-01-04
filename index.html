@@ -58,6 +58,24 @@
         <el-button type="success" @click="addTrayMenu">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="编辑标签" :visible.sync="editMenuDialog" :close-on-click-modal="false" @close="closeEdit">
+      <el-form :model="newMenu">
+        <el-form-item label="标签名称" :label-width="300">
+          <el-input v-model="newMenu.label" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="标签值" :label-width="300">
+          <el-image :src="newMenu.value" v-if="newMenu.type == 'img'" class="border-dashed border-2 h-16" fit="contain">
+          </el-image>
+          <el-input v-model="newMenu.value" autocomplete="off" v-else placeholder="请输入文本" clearable>
+          </el-input>
+        </el-form-item>
+        <el-button @click="selectFile">or选择图片</el-button>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeEdit">取 消</el-button>
+        <el-button type="success" @click="editTrayMenu">确 定</el-button>
+      </div>
+    </el-dialog>
     <el-dialog title="关于" :visible.sync="aboutDialog" :close-on-click-modal="false">
       <div>
         <h1 class="text-center text-lg font-bold mb-3">happy-copy</h1>

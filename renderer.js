@@ -8,6 +8,7 @@ var app = new Vue({
             type: '', // 目前支持：''/'text'=文本，'img'=图片，
         },
         newMenuDialog: false,
+        editMenuDialog: false,
         selected: '', // 记录选中的标签名称
         aboutDialog: false, // 关于
         version: '-.-.-',
@@ -18,7 +19,6 @@ var app = new Vue({
         this.list = await window.trayMenu.query();
         // 绑定点击“新增”
         window.appMenu.bindClickAddTrayMenu(function (event, init) {
-            console.log(init);
             // 打开新增弹窗
             this.newMenuDialog = true;
             if (init) {
@@ -29,7 +29,27 @@ var app = new Vue({
             }
         }.bind(this));
 
-        // 绑定点击菜单事件
+        // 绑定点击“编辑”
+        window.appMenu.bindClickEditTrayMenu(function () {
+            if (this.selected) {
+                // 打开新增弹窗
+                this.editMenuDialog = true;
+                const selectedMenu = this.list.find(item => {
+                    return item.label == this.selected;
+                })
+                this.newMenu = {
+                    ...selectedMenu,
+                }
+            } else {
+                this.$message({
+                    showClose: true,
+                    type: 'warning',
+                    message: '请先选择一个标签',
+                });
+            }
+        }.bind(this));
+
+        // 绑定点击“删除”
         window.appMenu.bindClickDeleteTrayMenu(function () {
             // 删除
             if (this.selected) {
@@ -50,6 +70,47 @@ var app = new Vue({
         }.bind(this));
     },
     methods: {
+        async editTrayMenu() {
+            // 标签名不能为空，也不能重复
+            if (!!this.newMenu.label) {
+                if (this.newMenu.label == this.selected || !this.list.find(({
+                        label
+                    }) => label == this.newMenu.label)) {
+                    this.list = await window.trayMenu.edit(this.newMenu, this.selected);
+                    // 更改选中的项目
+                    this.selected = this.newMenu.label;
+                    // 清空表单
+                    this.newMenu = {
+                        label: '',
+                        value: '',
+                        type: '',
+                    }
+                    // 关闭弹窗
+                    this.editMenuDialog = false;
+                    this.$message({
+                        showClose: true,
+                        type: 'success',
+                        message: '已保存!'
+                    });
+                } else {
+                    this.$message({
+                        showClose: true,
+                        type: 'warning',
+                        message: '标签名称不能重复！'
+                    });
+                }
+            } else {
+                this.$message({
+                    showClose: true,
+                    type: 'warning',
+                    message: '标签名称不能为空！'
+                });
+            }
+        },
+        closeEdit() {
+            this.newMenu.type = '';
+            this.editMenuDialog = false;
+        },
         // 选择一个
         select(itemLabel) {
             this.selected = (this.selected == itemLabel ? '' : itemLabel)
