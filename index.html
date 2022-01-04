@@ -19,7 +19,7 @@
           @dragleave="dropLeave($event, index)" @drop="dropEnd($event, index)" class="p-1"></div>
         <div :class="selected == item.label ? 'pattern-checks-sm text-green-200' : 'hover:bg-green-100'"
           class="my-1 cursor-pointer rounded-sm p-2 flex items-center text-green-50 bg-gray-50"
-          @click="selected = (selected == item.label ?  '' : item.label)" draggable="true"
+          @click="select(item.label)" draggable="true" @contextmenu="select(item.label)"
           @dragstart="dragStart($event, index)">
           <div class="flex-none mr-20 text-black font-medium">{{item.label}}</div>
           <div class="flex-auto text-right text-red-500">

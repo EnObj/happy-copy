@@ -50,6 +50,10 @@ var app = new Vue({
         }.bind(this));
     },
     methods: {
+        // 选择一个
+        select(itemLabel) {
+            this.selected = (this.selected == itemLabel ? '' : itemLabel)
+        },
         closeAdd() {
             this.newMenu.type = '';
             this.newMenuDialog = false;
