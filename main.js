@@ -278,9 +278,25 @@ app.whenReady().then(() => {
   }, {
     label: '设置',
     submenu: [{
+      label: '开机启动',
+      type: 'checkbox',
+      checked: app.getLoginItemSettings().openAtLogin,
+      click: async () => {
+        if (app.getLoginItemSettings().openAtLogin) {
+          app.setLoginItemSettings({
+            openAtLogin: false,
+          })
+        } else {
+          app.setLoginItemSettings({
+            openAtLogin: true,
+          })
+        }
+      }
+    }, {
       label: '显示开发人员工具',
       type: 'checkbox',
       accelerator: 'F12',
+      checked: false,
       click: async () => {
         if (win.webContents.isDevToolsOpened()) {
           win.webContents.closeDevTools();
