@@ -290,6 +290,12 @@ app.whenReady().then(() => {
         }
       },
       {
+        label: '编辑',
+        click: async () => {
+          win.webContents.send('clickEditTrayMenu')
+        }
+      },
+      {
         label: '删除',
         click: async () => {
           win.webContents.send('clickDeleteTrayMenu', 'whoooooooh!')
