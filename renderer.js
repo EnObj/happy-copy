@@ -86,6 +86,8 @@ var app = new Vue({
                 type: 'warning'
             }).then(async () => {
                 this.list = await window.trayMenu.delete(menuLabel);
+                // 释放高亮选项
+                this.selected = '';
                 this.$message({
                     showClose: true,
                     type: 'success',
