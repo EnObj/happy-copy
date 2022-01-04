@@ -125,10 +125,13 @@ var app = new Vue({
                     label
                 }) => label == this.newMenu.label)) {
                 this.list = await window.trayMenu.add(this.newMenu);
+                // 更改选中的项目
+                this.selected = this.newMenu.label;
                 // 清空表单
                 this.newMenu = {
                     label: '',
                     value: '',
+                    type: '',
                 }
                 // 关闭弹窗
                 this.newMenuDialog = false;
