@@ -258,13 +258,14 @@ app.whenReady().then(() => {
   })
 
   // 右键菜单
-  ipcMain.on('show-context-menu', (event) => {
-    const template = [{
+  ipcMain.on('show-context-menu', (event, haveSelected) => {
+    let template = [{
       label: '新建',
       click: () => {
         win.webContents.send('clickAddTrayMenu')
       }
-    }, {
+    }]
+    const templateWhenSelected = [{
       label: '编辑',
       click: () => {
         win.webContents.send('clickEditTrayMenu')
@@ -275,6 +276,9 @@ app.whenReady().then(() => {
         win.webContents.send('clickDeleteTrayMenu', 'whoooooooh!')
       }
     }]
+    if (haveSelected) {
+      template = _.concat(template, templateWhenSelected)
+    }
     const menu = Menu.buildFromTemplate(template)
     menu.popup(BrowserWindow.fromWebContents(event.sender))
   })

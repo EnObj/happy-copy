@@ -30,7 +30,7 @@ contextBridge.exposeInMainWorld('happyCopy', {
 // 绑定右键
 window.addEventListener('contextmenu', (e) => {
   e.preventDefault()
-  ipcRenderer.send('show-context-menu')
+  ipcRenderer.send('show-context-menu', !!document.querySelector('.pattern-checks-sm'))
 })
 
 ipcRenderer.on('context-menu-command', (e, command) => {
