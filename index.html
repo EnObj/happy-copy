@@ -41,36 +41,14 @@
       <div v-if="!list.length" class="text-sm">啥也没有，点击左上角“标签-新建”可创建标签。</div>
     </div>
     <el-dialog title="新建标签" :visible.sync="newMenuDialog" :close-on-click-modal="false" @close="closeAdd">
-      <el-form :model="newMenu">
-        <el-form-item label="标签名称" :label-width="300">
-          <el-input v-model="newMenu.label" autocomplete="off" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="标签值" :label-width="300">
-          <el-image :src="newMenu.value" v-if="newMenu.type == 'img'" class="border-dashed border-2 h-16" fit="contain">
-          </el-image>
-          <el-input v-model="newMenu.value" autocomplete="off" v-else placeholder="请输入文本" clearable>
-          </el-input>
-        </el-form-item>
-        <el-button @click="selectFile">or选择图片</el-button>
-      </el-form>
+      <tray-menu-form :tray-menu.sync="touchedItem"></tray-menu-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeAdd">取 消</el-button>
         <el-button type="success" @click="addTrayMenu">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="编辑标签" :visible.sync="editMenuDialog" :close-on-click-modal="false" @close="closeEdit">
-      <el-form :model="newMenu">
-        <el-form-item label="标签名称" :label-width="300">
-          <el-input v-model="newMenu.label" autocomplete="off" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="标签值" :label-width="300">
-          <el-image :src="newMenu.value" v-if="newMenu.type == 'img'" class="border-dashed border-2 h-16" fit="contain">
-          </el-image>
-          <el-input v-model="newMenu.value" autocomplete="off" v-else placeholder="请输入文本" clearable>
-          </el-input>
-        </el-form-item>
-        <el-button @click="selectFile">or选择图片</el-button>
-      </el-form>
+      <tray-menu-form :tray-menu.sync="touchedItem"></tray-menu-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeEdit">取 消</el-button>
         <el-button type="success" @click="editTrayMenu">确 定</el-button>
@@ -86,6 +64,36 @@
       </div>
     </el-dialog>
   </div>
+  <script type="text/x-template" id="tray-menu-form">
+    <el-form :model="trayMenu" :inline="false" label-width="100px">
+      <el-form-item label="标签名称">
+        <el-input v-model="trayMenu.label" autocomplete="off" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="标签类型">
+        <el-select v-model="trayMenu.type" class="w-full">
+          <el-option
+            v-for="item in [{label: '文本(默认)', value: ''}, {label: '文本', value: 'text'},{label: '图片', value: 'img'}]"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="标签值">
+        <div v-if="trayMenu.type == 'img'" class="flex items-center">
+          <div class="flex items-center mr-4" v-if="trayMenu.value">
+            <el-image :src="trayMenu.value" class="border-dashed border-2 h-10" fit="contain" :preview-src-list="[trayMenu.value]">
+            </el-image>
+          </div>
+          <div>
+            <el-button @click="selectFile">选择图片</el-button>
+          </div>
+        </div>
+        <el-input v-model="trayMenu.value" autocomplete="off" v-else placeholder="请输入文本" clearable>
+        </el-input>
+      </el-form-item>
+    </el-form>
+  </script>
   <script src="./assets/js/vue@2.js"></script>
   <script src="./assets/js/lodash.min.js"></script>
   <script src="./assets/element-ui/index.js"></script>

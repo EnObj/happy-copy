@@ -1,17 +1,42 @@
+Vue.component('tray-menu-form', {
+    template: '#tray-menu-form',
+    props: ['trayMenu'],
+    data() {
+        return {}
+    },
+    watch: {
+        'trayMenu': {
+            deep: true,
+            handler(val) {
+                this.$emit('update:trayMenu', val)
+            }
+        },
+        'trayMenu.type'() {
+            this.trayMenu.value = '';
+        }
+    },
+    methods: {
+        async selectFile() {
+            this.trayMenu.value = await window.trayMenu.selectFile();
+            this.trayMenu.type = 'img';
+        },
+    }
+})
 var app = new Vue({
     el: '#app',
     data: {
         list: [],
-        newMenu: {
-            label: '',
-            value: '',
-            type: '', // 目前支持：''/'text'=文本，'img'=图片，
-        },
         newMenuDialog: false,
         editMenuDialog: false,
         selected: '', // 记录选中的标签名称
         aboutDialog: false, // 关于
         version: '-.-.-',
+        // 正在编辑的项目
+        touchedItem: {
+            label: '',
+            value: '',
+            type: '', // 目前支持：''/'text'=文本，'img'=图片，
+        }
     },
     async created() {
         this.version = await window.happyCopy.getVersion();
@@ -22,7 +47,7 @@ var app = new Vue({
             // 打开新增弹窗
             this.newMenuDialog = true;
             if (init) {
-                this.newMenu = {
+                this.touchedItem = {
                     ...this.newMenu,
                     ...init,
                 }
@@ -37,7 +62,7 @@ var app = new Vue({
                 const selectedMenu = this.list.find(item => {
                     return item.label == this.selected;
                 })
-                this.newMenu = {
+                this.touchedItem = {
                     ...selectedMenu,
                 }
             } else {
@@ -70,23 +95,28 @@ var app = new Vue({
         }.bind(this));
     },
     methods: {
+        cleanTouch() {
+            // 清空表单
+            this.touchedItem = {
+                label: '',
+                value: '',
+                type: '',
+            }
+            // 关闭弹窗
+            this.newMenuDialog = false;
+            this.editMenuDialog = false;
+        },
         async editTrayMenu() {
             // 标签名不能为空，也不能重复
-            if (!!this.newMenu.label) {
-                if (this.newMenu.label == this.selected || !this.list.find(({
+            // TODO 挪到组件内维护
+            if (!!this.touchedItem.label) {
+                if (this.touchedItem.label == this.selected || !this.list.find(({
                         label
-                    }) => label == this.newMenu.label)) {
-                    this.list = await window.trayMenu.edit(this.newMenu, this.selected);
+                    }) => label == this.touchedItem.label)) {
+                    this.list = await window.trayMenu.edit(this.touchedItem, this.selected);
                     // 更改选中的项目
-                    this.selected = this.newMenu.label;
-                    // 清空表单
-                    this.newMenu = {
-                        label: '',
-                        value: '',
-                        type: '',
-                    }
-                    // 关闭弹窗
-                    this.editMenuDialog = false;
+                    this.selected = this.touchedItem.label;
+                    this.cleanTouch();
                     this.$message({
                         showClose: true,
                         type: 'success',
@@ -108,33 +138,29 @@ var app = new Vue({
             }
         },
         closeEdit() {
-            this.newMenu.type = '';
-            this.editMenuDialog = false;
+            this.cleanTouch();
         },
         // 选择一个
         select(itemLabel) {
             this.selected = (this.selected == itemLabel ? '' : itemLabel)
         },
         closeAdd() {
-            this.newMenu.type = '';
-            this.newMenuDialog = false;
+            this.cleanTouch();
         },
         async addTrayMenu() {
             // 标签名不能为空，也不能重复
-            if (!!this.newMenu.label && !this.list.find(({
+            if (!!this.touchedItem.label && !this.list.find(({
                     label
-                }) => label == this.newMenu.label)) {
-                this.list = await window.trayMenu.add(this.newMenu);
+                }) => label == this.touchedItem.label)) {
+                this.list = await window.trayMenu.add(this.touchedItem);
                 // 更改选中的项目
-                this.selected = this.newMenu.label;
-                // 清空表单
-                this.newMenu = {
-                    label: '',
-                    value: '',
-                    type: '',
-                }
-                // 关闭弹窗
-                this.newMenuDialog = false;
+                this.selected = this.touchedItem.label;
+                this.cleanTouch();
+                this.$message({
+                    showClose: true,
+                    type: 'success',
+                    message: '已创建!'
+                });
             } else {
                 this.$message({
                     showClose: true,
