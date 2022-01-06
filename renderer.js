@@ -137,11 +137,11 @@ var app = new Vue({
                     // 更改选中的项目
                     this.selected = this.touchedItem.label;
                     this.cleanTouch();
-                    this.$message({
-                        showClose: true,
-                        type: 'success',
-                        message: '已保存!'
-                    });
+                    // this.$message({
+                    //     showClose: true,
+                    //     type: 'success',
+                    //     message: '已保存!'
+                    // });
                 } else {
                     this.$message({
                         showClose: true,
@@ -176,12 +176,12 @@ var app = new Vue({
                 this.list = await window.trayMenu.add(this.touchedItem);
                 // 更改选中的项目
                 this.selected = this.touchedItem.label;
-                this.cleanTouch();
-                this.$message({
-                    showClose: true,
-                    type: 'success',
-                    message: '已创建!'
-                });
+                this.$nextTick(this.cleanTouch)
+                // this.$message({
+                //     showClose: true,
+                //     type: 'success',
+                //     message: '已创建!'
+                // });
             } else {
                 this.$message({
                     showClose: true,
@@ -199,17 +199,17 @@ var app = new Vue({
                 this.list = await window.trayMenu.delete(menuLabel);
                 // 释放高亮选项
                 this.selected = '';
-                this.$message({
-                    showClose: true,
-                    type: 'success',
-                    message: '删除成功!'
-                });
+                // this.$message({
+                //     showClose: true,
+                //     type: 'success',
+                //     message: '删除成功!'
+                // });
             }).catch(() => {
-                this.$message({
-                    showClose: true,
-                    type: 'info',
-                    message: '已取消删除'
-                });
+                // this.$message({
+                //     showClose: true,
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
             });
         },
         async toggleHidden(menuLabel) {

@@ -1,0 +1,21 @@
+.list-enter-active {
+    transition: all 1s;
+}
+
+.list-leave-active {
+    transition: all 0.5s;
+}
+
+.list-enter {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+.list-move {
+    transition: transform 0.5s;
+}
