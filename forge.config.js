@@ -1,7 +1,9 @@
 const path = require("path");
 console.log(path.join(__dirname, "assets/image/icon.png"));
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    icon: path.join(__dirname, "assets/image/favicon.ico"),
+  },
   makers: [{
       name: "@electron-forge/maker-squirrel",
       config: {
