@@ -44,33 +44,40 @@ var app = new Vue({
         this.list = await window.trayMenu.query();
         // 绑定点击“新增”
         window.appMenu.bindClickAddTrayMenu(function (event, init) {
-            // 打开新增弹窗
-            this.newMenuDialog = true;
-            if (init) {
-                this.touchedItem = {
-                    ...this.newMenu,
-                    ...init,
+            // 当前未在新增或编辑
+            if (!this.newMenuDialog && !this.editMenuDialog) {
+                // 打开新增弹窗
+                this.newMenuDialog = true;
+                console.log(init);
+                if (init) {
+                    this.touchedItem = {
+                        ...this.touchedItem,
+                        ...init,
+                    }
                 }
             }
         }.bind(this));
 
         // 绑定点击“编辑”
         window.appMenu.bindClickEditTrayMenu(function () {
-            if (this.selected) {
-                // 打开新增弹窗
-                this.editMenuDialog = true;
-                const selectedMenu = this.list.find(item => {
-                    return item.label == this.selected;
-                })
-                this.touchedItem = {
-                    ...selectedMenu,
+            // 当前未在新增或编辑
+            if (!this.newMenuDialog && !this.editMenuDialog) {
+                if (this.selected) {
+                    // 打开新增弹窗
+                    this.editMenuDialog = true;
+                    const selectedMenu = this.list.find(item => {
+                        return item.label == this.selected;
+                    })
+                    this.touchedItem = {
+                        ...selectedMenu,
+                    }
+                } else {
+                    this.$message({
+                        showClose: true,
+                        type: 'warning',
+                        message: '请先选择一个标签',
+                    });
                 }
-            } else {
-                this.$message({
-                    showClose: true,
-                    type: 'warning',
-                    message: '请先选择一个标签',
-                });
             }
         }.bind(this));
 
@@ -190,10 +197,6 @@ var app = new Vue({
                     message: '已取消删除'
                 });
             });
-        },
-        async selectFile() {
-            this.newMenu.value = await window.trayMenu.selectFile();
-            this.newMenu.type = 'img';
         },
         async toggleHidden(menuLabel) {
             this.list = await window.trayMenu.toggleHidden(menuLabel);

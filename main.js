@@ -57,7 +57,7 @@ function createWindow() {
           value: clipboard.readText() || ''
         })
       }
-      event.preventDefault()
+      // event.preventDefault()
     }
   })
 }
