@@ -151,7 +151,7 @@ app.whenReady().then(() => {
 
   // 添加标签
   ipcMain.handle('tray-menu:add', async (event, newMenu) => {
-    menus.push(newMenu)
+    menus.unshift(newMenu)
 
     // 生成tray菜单
     genTrayMenu(tray, menus);
