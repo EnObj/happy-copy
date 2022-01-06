@@ -93,7 +93,8 @@
             <el-button @click="selectFile">选择图片</el-button>
           </div>
         </div>
-        <el-input v-model="trayMenu.value" autocomplete="off" v-else placeholder="请输入文本" clearable>
+        <el-input v-model="trayMenu.value" type="textarea"
+        :rows="3" autocomplete="off" v-else placeholder="请输入文本" clearable>
         </el-input>
       </el-form-item>
     </el-form>
