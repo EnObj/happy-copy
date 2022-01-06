@@ -11,8 +11,10 @@ Vue.component('tray-menu-form', {
                 this.$emit('update:trayMenu', val)
             }
         },
-        'trayMenu.type'() {
-            this.trayMenu.value = '';
+        'trayMenu.type'(now, old) {
+            if (now == 'img' || old == 'img') {
+                this.trayMenu.value = '';
+            }
         }
     },
     methods: {
