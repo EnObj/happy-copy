@@ -1,13 +1,13 @@
 # happy-copy
 
 #### 介绍
-嗨皮拷贝是一个桌面端办公效率工具，旨在帮助用户快速拷贝指定内容，与输入法的用户自定义短语功能有异曲同工之妙，但又不尽相同，适用场景和内容不通。
+嗨皮拷贝是一个桌面端办公效率工具，旨在帮助用户快速拷贝指定内容。
 
 #### 软件架构
-开发平台：electron
-开发框架：vuejs
-组件库：elementUI
-样式库：tailwindcss
+- 开发平台：electron
+- 开发框架：vuejs
+- 组件库：elementUI
+- 样式库：tailwindcss
 
 ### 安装试用
 - 下载链接：[https://pan.xunlei.com/s/VMsiF1RtNdBbcpOGIDjGmDZ_A1](https://pan.xunlei.com/s/VMsiF1RtNdBbcpOGIDjGmDZ_A1)
