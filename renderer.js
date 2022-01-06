@@ -2,7 +2,15 @@ Vue.component('tray-menu-form', {
     template: '#tray-menu-form',
     props: ['trayMenu'],
     data() {
-        return {}
+        return {
+            rules: {
+                label: [{
+                    required: true,
+                    message: '请输入标签名称',
+                    trigger: 'change'
+                }, ]
+            }
+        }
     },
     watch: {
         'trayMenu': {
@@ -22,6 +30,9 @@ Vue.component('tray-menu-form', {
             this.trayMenu.value = await window.trayMenu.selectFile();
             this.trayMenu.type = 'img';
         },
+        validate(callback) {
+            return this.$refs.tmform.validate(callback)
+        }
     }
 })
 var app = new Vue({
@@ -116,8 +127,8 @@ var app = new Vue({
             this.editMenuDialog = false;
         },
         async editTrayMenu() {
-            // 标签名不能为空，也不能重复
-            // TODO 挪到组件内维护
+            // 标签名不能重复
+            await this.$refs.editTmform.validate()
             if (!!this.touchedItem.label) {
                 if (this.touchedItem.label == this.selected || !this.list.find(({
                         label
@@ -157,8 +168,9 @@ var app = new Vue({
             this.cleanTouch();
         },
         async addTrayMenu() {
-            // 标签名不能为空，也不能重复
-            if (!!this.touchedItem.label && !this.list.find(({
+            // 标签名不能重复
+            await this.$refs.addTmform.validate()
+            if (!this.list.find(({
                     label
                 }) => label == this.touchedItem.label)) {
                 this.list = await window.trayMenu.add(this.touchedItem);
@@ -174,7 +186,7 @@ var app = new Vue({
                 this.$message({
                     showClose: true,
                     type: 'warning',
-                    message: '标签名称不能为空或重复！'
+                    message: '标签名称不能重复！'
                 });
             }
         },
