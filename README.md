@@ -1,7 +1,20 @@
+![icon](https://6465-dev-9g0suwuw61afb9f3-1252108641.tcb.qcloud.la/enobj/happy-copy/icon.png?sign=317f4325d1d96744e64cf26f73e123c9&t=1643177877)
 # happy-copy
 
 #### 介绍
 嗨皮拷贝是一个桌面端办公效率工具，旨在帮助用户快速拷贝指定内容。
+
+#### 特性
+1. 常驻托盘，一键复制
+2. 支持隐藏敏感内容
+3. 支持图片项
+4. ctrl+v快速唤起新建项
+5. 拖拽排序
+
+#### 界面
+![主页面](https://6465-dev-9g0suwuw61afb9f3-1252108641.tcb.qcloud.la/enobj/happy-copy/%E4%B8%BB%E7%95%8C%E9%9D%A2.jpg?sign=4838429499dca4b80f00f7438ddb46f9&t=1643178117)   
+![托盘](https://6465-dev-9g0suwuw61afb9f3-1252108641.tcb.qcloud.la/enobj/happy-copy/%E6%89%98%E7%9B%98.jpg?sign=603bc82e3a87a455329bd02d372832da&t=1643178152)  
+![编辑](https://6465-dev-9g0suwuw61afb9f3-1252108641.tcb.qcloud.la/enobj/happy-copy/%E7%BC%96%E8%BE%91%E8%A7%86%E5%9B%BE.jpg?sign=084edefe3fc45cabf902ccd3442c2d99&t=1643178274)  
 
 #### 软件架构
 - 开发平台：electron
